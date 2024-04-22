@@ -16,7 +16,7 @@ client = Spot(api_key=apiKey, api_secret=secretKey)
 # # 连接到测试网络（测试网络使用方式看文档）
 # client = Spot(base_url='https://testnet.binance.vision')
 
-#获取10G根btc的分钟k线
+#获取1根btc的分钟k线
 print(client.klines("BTCUSDT", "1m", limit = 1))
 
 
