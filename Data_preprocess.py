@@ -42,13 +42,12 @@ Xlist = []
 Ylist = []
 cnt = 0
 for ts in timestamps:
-    cnt = cnt +1
+    cnt = cnt + 1
     print(cnt)
-    df, Xlist, Ylist = DataSelect.SelectFitdata(data1m,data3m,data15m,data1h,data4h,data1d,base_time=ts*1000)  # 假设SelectFitdata函数可以根据时间戳返回一个DataFrame
+    df, Xlist, Ylist = DataSelect.SelectFitdata(data1m, data3m, data15m, data1h, data4h, data1d, base_time=ts*1000)  # 假设SelectFitdata函数可以根据时间戳返回一个DataFrame
     dfs.append(df)
-    print(Xlist)
-    print(Ylist)
-
 # 使用concat函数将所有DataFrame按行连接
+print(Xlist)
+print(Ylist)
 result_df = pd.concat(dfs, ignore_index=True)
-result_df.to_csv(r'D:\Binance\fitdata.csv')
+result_df.to_csv(r'D:\Binance\fitdata0423.csv')

@@ -1,7 +1,13 @@
 import numpy as np
 
-def SelectFitdata(data1m,data3m,data15m,data1h,data4h,data1d, base_time = 1711324740000):
+def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,data1dinput, base_time = 1711324740000):
     import pandas as pd
+    data1m = data1minput.copy()
+    data3m = data3minput.copy()
+    data15m = data15minput.copy()
+    data1h = data1hinput.copy()
+    data4h = data4hinput.copy()
+    data1d = data1dinput.copy()
 
     # 新建DataFrame存储结果
     new_data = {}
@@ -190,9 +196,9 @@ def SelectFitdata(data1m,data3m,data15m,data1h,data4h,data1d, base_time = 171132
         new_data[f'low_y1_{i}'] = current_data['low']
         new_data[f'close_y1_{i}'] = current_data['close']
         if (current_data['high'] > high_y5):
-            high_y5 = current_data['high_y5']
+            high_y5 = current_data['high']
         if (current_data['low'] < low_y5):
-            high_y5 = current_data['low_y5']
+            low_y5 = current_data['low']
         Ylist.append(f'open_y1_{i}')
         Ylist.append(f'high_y1_{i}')
         Ylist.append(f'low_y1_{i}')
