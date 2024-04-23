@@ -11,44 +11,44 @@ def SelectFitdata(data1m,data3m,data15m,data1h,data4h,data1d, base_time = 171132
     # 找出与current_time最接近的值的索引,取得该数据中最接近basetime的time
     closest_index = np.abs(data1m['open_time'] - base_time).argmin()
     closest_row = data1m.iloc[closest_index]
-    base_fixed_time = int(closest_row['open_time'])
-    new_data['base_time'] = base_fixed_time #用于数据检查
+    base_time = int(closest_row['open_time'])
+    new_data['base_time'] = base_time #此项用于数据检查
 
 
 
-    # 预处理，将所有价格减去当前价格
-    current_price = data1m[data1m['open_time'] == base_fixed_time]['open'].iloc[0]
+    # 预处理，将所有价格减去基准价格再除以基准价格
+    current_price = data1m[data1m['open_time'] == base_time]['open'].iloc[0]
     new_data['current_price'] = current_price
     Xlist.append('current_price')
     data1m['open'] = (data1m['open'] - current_price)/current_price
     data1m['high'] = (data1m['high'] - current_price)/current_price
     data1m['low'] = (data1m['low'] - current_price)/current_price
-    data1m['close'] = data1m['close'] - current_price
-    data3m['open'] = data3m['open'] - current_price
-    data3m['high'] = data3m['high'] - current_price
-    data3m['low'] = data3m['low'] - current_price
-    data3m['close'] = data3m['close'] - current_price
-    data15m['open'] = data15m['open'] - current_price
-    data15m['high'] = data15m['high'] - current_price
-    data15m['low'] = data15m['low'] - current_price
-    data15m['close'] = data15m['close'] - current_price
-    data1h['open'] = data1h['open'] - current_price
-    data1h['high'] = data1h['high'] - current_price
-    data1h['low'] = data1h['low'] - current_price
-    data1h['close'] = data1h['close'] - current_price
-    data4h['open'] = data4h['open'] - current_price
-    data4h['high'] = data4h['high'] - current_price
-    data4h['low'] = data4h['low'] - current_price
-    data4h['close'] = data4h['close'] - current_price
-    data1d['open'] = data1d['open'] - current_price
-    data1d['high'] = data1d['high'] - current_price
-    data1d['low'] = data1d['low'] - current_price
-    data1d['close'] = data1d['close'] - current_price
+    data1m['close'] = (data1m['close'] - current_price)/current_price
+    data3m['open'] = (data3m['open'] - current_price)/current_price
+    data3m['high'] = (data3m['high'] - current_price)/current_price
+    data3m['low'] = (data3m['low'] - current_price)/current_price
+    data3m['close'] = (data3m['close'] - current_price)/current_price
+    data15m['open'] = (data15m['open'] - current_price)/current_price
+    data15m['high'] = (data15m['high'] - current_price)/current_price
+    data15m['low'] = (data15m['low'] - current_price)/current_price
+    data15m['close'] = (data15m['close'] - current_price)/current_price
+    data1h['open'] = (data1h['open'] - current_price)/current_price
+    data1h['high'] = (data1h['high'] - current_price)/current_price
+    data1h['low'] = (data1h['low'] - current_price)/current_price
+    data1h['close'] = (data1h['close'] - current_price)/current_price
+    data4h['open'] = (data4h['open'] - current_price)/current_price
+    data4h['high'] = (data4h['high'] - current_price)/current_price
+    data4h['low'] = (data4h['low'] - current_price)/current_price
+    data4h['close'] = (data4h['close'] - current_price)/current_price
+    data1d['open'] = (data1d['open'] - current_price)/current_price
+    data1d['high'] = (data1d['high'] - current_price)/current_price
+    data1d['low'] = (data1d['low'] - current_price)/current_price
+    data1d['close'] = (data1d['close'] - current_price)/current_price
 
     # 循环处理每一分钟的数据
     for i in range(0, 60):
         # 计算当前分钟的时间戳，从现在到过去1小时
-        current_time = base_fixed_time - i * 60 * 1000
+        current_time = base_time - i * 60 * 1000
         # 获取对应时间戳的数据
         current_data = data1m[data1m['open_time'] == current_time].iloc[0]
         # 将数据存入新的DataFrame中
@@ -176,21 +176,32 @@ def SelectFitdata(data1m,data3m,data15m,data1h,data4h,data1d, base_time = 171132
         Xlist.append(f'low_1440_{i}')
 
 
-    # 处理未来1-10分钟的数据
-    for i in range(1, 10):
+    # 处理未来1-5分钟的1分钟数据
+    high_y5 = -99999
+    low_y5 = 99999
+    for i in range(1, 5):
         # 计算当前分钟的时间戳，从现在到过去1小时
-        current_time = base_fixed_time + i * 60 * 1000
+        current_time = base_time + i * 60 * 1000
         # 获取对应时间戳的数据
         current_data = data1m[data1m['open_time'] == current_time].iloc[0]
         # 将数据存入新的DataFrame中
-        new_data[f'open_y_{i}'] = current_data['open']
-        new_data[f'high_y_{i}'] = current_data['high']
-        new_data[f'low_y_{i}'] = current_data['low']
-        new_data[f'close_y_{i}'] = current_data['close']
-        Ylist.append(f'open_y_{i}')
-        Ylist.append(f'high_y_{i}')
-        Ylist.append(f'low_y_{i}')
-        Ylist.append(f'close_y_{i}')
+        new_data[f'open_y1_{i}'] = current_data['open']
+        new_data[f'high_y1_{i}'] = current_data['high']
+        new_data[f'low_y1_{i}'] = current_data['low']
+        new_data[f'close_y1_{i}'] = current_data['close']
+        if (current_data['high'] > high_y5):
+            high_y5 = current_data['high_y5']
+        if (current_data['low'] < low_y5):
+            high_y5 = current_data['low_y5']
+        Ylist.append(f'open_y1_{i}')
+        Ylist.append(f'high_y1_{i}')
+        Ylist.append(f'low_y1_{i}')
+        Ylist.append(f'close_y1_{i}')
+    new_data['high_y5'] = high_y5 #添加未来5分钟内最大涨幅
+    new_data['low_y5'] = low_y5 #添加未来5分钟内最大跌幅
+    Ylist.append('high_y5')
+    Ylist.append('low_y5')
+
     # 创建新的DataFrame
     new_df = pd.DataFrame([new_data])
     # 打印新的DataFrame
