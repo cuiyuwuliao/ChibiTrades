@@ -23,10 +23,32 @@ if not test:
     keys["secreteKey"] = re.search(r'secretKey\s*=\s*"([^"]+)"', data).group(1)
     client = Spot(api_key = keys["apiKey"], api_secret = keys["secreteKey"])
 
+accountInfo = {}
+
+
+def refreshAccountInfo():
+    global accountInfo
+    accountInfo = client.account()
+    return accountInfo
+
+def checkBalance(symbol):
+    global accountInfo
+    balanceList = accountInfo['balances']
+    for crypto in balanceList:
+        if crypto['asset'] == symbol:
+            return [crypto['free'], crypto['locked']]
+    return None
+        
+
 #获取1根btc的分钟k线
 print(client.klines("BTCUSDT", "1m", limit = 1))
 #获取账号所有币种余额
-print(client.account())
+refreshAccountInfo()
+print(checkBalance('USDT'))
+
+
+
+
 #获取正在进行的交易单
 print(client.my_trades('BTCUSDT'))
 
@@ -34,19 +56,30 @@ print(client.my_trades('BTCUSDT'))
 #真实账号下订单之前，网页登陆币安，在“账户-api管理”界面添加当前的ip地址，然后勾选允许现货交易，否则无法交易
 #参考文档：https://binance-connector.readthedocs.io/en/latest/binance.spot.trade.html?highlight=new_order
 def placeOrder(params):
-    response = 0
-    client.new_order_test(**params)
-    print(response)
+    response = client.new_order(**params)
+    print(str(response) + "1232123123")
     return response
 
-#市价购买0.002个比特币
+
 params = {
-    'symbol': 'BTCUSDT',
+    'symbol': 'ETHUSDT',
     'side': 'BUY',
     'type': 'MARKET',
-    'quantity': 0.002,
+    'quantity': 0.01
     # 'timeInForce': 'GTC',
-    # 'price': 9500
+    # 'price': 70000
 }
 
+# params = {
+#     'symbol': 'BTCUSDT',
+#     'side': 'SELL',
+#     'type': 'LIMIT',
+#     'timeInForce': 'GTC',
+#     'quantity': 0.002,
+#     'price': 70000
+# }
+
 placeOrder(params)
+refreshAccountInfo()
+print(checkBalance('USDT'))
+
