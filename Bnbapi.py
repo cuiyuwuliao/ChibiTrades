@@ -57,29 +57,30 @@ print(client.my_trades('BTCUSDT'))
 #参考文档：https://binance-connector.readthedocs.io/en/latest/binance.spot.trade.html?highlight=new_order
 def placeOrder(params):
     response = client.new_order(**params)
-    print(str(response) + "1232123123")
+    print(response)
     return response
 
 
-params = {
-    'symbol': 'ETHUSDT',
-    'side': 'BUY',
-    'type': 'MARKET',
-    'quantity': 0.01
-    # 'timeInForce': 'GTC',
-    # 'price': 70000
-}
-
 # params = {
-#     'symbol': 'BTCUSDT',
-#     'side': 'SELL',
-#     'type': 'LIMIT',
-#     'timeInForce': 'GTC',
-#     'quantity': 0.002,
-#     'price': 70000
+#     'symbol': 'ETHUSDT',
+#     'side': 'BUY',
+#     'type': 'MARKET',
+#     'quantity': 0.01
+#     # 'timeInForce': 'GTC',
+#     # 'price': 70000
 # }
+
+params = {
+    'symbol': 'BTCUSDT',
+    'side': 'SELL',
+    'type': 'LIMIT',
+    'timeInForce': 'GTC',
+    'quantity': 0.002,
+    'price': 64000
+}
 
 placeOrder(params)
 refreshAccountInfo()
 print(checkBalance('USDT'))
+print(client.my_trades('BTCUSDT'))
 
