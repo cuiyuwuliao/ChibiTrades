@@ -1,44 +1,52 @@
 from binance.spot import Spot
 import re
 
-
-#读取同路径下keys.txt文件里的key,文件需要包含以下两行
+#默认使用测试账号,自带余额
+#如果要使用真实账号，在同路径下创建“keys.txt”文件，文件需要包含以下两行
 #apiKey = "<your key>"(记得加引号)
 #secretKey = "<your key>"(记得加引号)
 
-with open('keys.txt', 'r') as file:
-    data = file.read()
-apiKey = re.search(r'apiKey\s*=\s*"([^"]+)"', data).group(1)
-secretKey = re.search(r'secretKey\s*=\s*"([^"]+)"', data).group(1)
+#使用测试账号
+test = True
+#测试账号
+keys = {
+    "apiKey" : "qgXWbFgv2IjtW0E2tixQTAozATBWLK45kz2h7Gyc18l5jEPT1zsPokWxlVDfMOgr",
+    "secreteKey": "ArCRb4CJgIlFf01L7a3N5brg5h7KmaGZNpUAnwu26i20nvfNBkJ0DMrk6J5Bxq4f"
+}
+client = Spot(api_key = keys["apiKey"], api_secret = keys["secreteKey"], base_url='https://testnet.binance.vision')
 
-# 登陆现货账号，默认连接到正式网络
-client = Spot(api_key=apiKey, api_secret=secretKey)
-
-# 连接到测试网络
-client = Spot(base_url='https://testnet.binance.vision/api')
+#使用真实账号
+if not test:
+    with open('keys.txt', 'r') as file:
+        data = file.read()
+    keys["apiKey"] = re.search(r'apiKey\s*=\s*"([^"]+)"', data).group(1)
+    keys["secreteKey"] = re.search(r'secretKey\s*=\s*"([^"]+)"', data).group(1)
+    client = Spot(api_key = keys["apiKey"], api_secret = keys["secreteKey"])
 
 #获取1根btc的分钟k线
 print(client.klines("BTCUSDT", "1m", limit = 1))
-
+#获取账号所有币种余额
+print(client.account())
+#获取正在进行的交易单
+print(client.my_trades('BTCUSDT'))
 
 #下订单
-#下订单之前，网页登陆币安，在“账户-api管理”界面添加当前的ip地址，然后勾选允许现货交易，否则无法交易
+#真实账号下订单之前，网页登陆币安，在“账户-api管理”界面添加当前的ip地址，然后勾选允许现货交易，否则无法交易
 #参考文档：https://binance-connector.readthedocs.io/en/latest/binance.spot.trade.html?highlight=new_order
 def placeOrder(params):
-    response = client.new_order_test(**params)
+    response = 0
+    client.new_order_test(**params)
     print(response)
     return response
 
-# # 显示账户余额
-# print(client.account())
-
+#市价购买0.002个比特币
 params = {
     'symbol': 'BTCUSDT',
-    'side': 'SELL',
-    'type': 'LIMIT',
-    'timeInForce': 'GTC',
+    'side': 'BUY',
+    'type': 'MARKET',
     'quantity': 0.002,
-    'price': 9500
+    # 'timeInForce': 'GTC',
+    # 'price': 9500
 }
 
 placeOrder(params)
