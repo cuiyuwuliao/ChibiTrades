@@ -5,6 +5,7 @@ import re
 #读取同路径下keys.txt文件里的key,文件需要包含以下两行
 #apiKey = "<your key>"(记得加引号)
 #secretKey = "<your key>"(记得加引号)
+
 with open('keys.txt', 'r') as file:
     data = file.read()
 apiKey = re.search(r'apiKey\s*=\s*"([^"]+)"', data).group(1)

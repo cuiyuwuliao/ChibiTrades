@@ -3,9 +3,9 @@ from sklearn.ensemble import RandomForestRegressor
 import pandas as pd
 import numpy as np
 
-model_h5_file_path = ''
-model_l5_file_path = ''
-model_o5_file_path = ''
+model_h5_file_path = 'rfmodel_high_yh5_2024-04-24.pkl'
+model_l5_file_path = 'rfmodel_high_yl5_2024-04-24.pkl'
+model_o5_file_path = 'rfmodel_high_y5_2024-04-24.pkl'
 
 # 加载模型文件
 model_h5 = joblib.load(model_h5_file_path)

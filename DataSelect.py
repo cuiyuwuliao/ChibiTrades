@@ -52,7 +52,7 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
     data1d['close'] = (data1d['close'] - current_price)/current_price
 
     # 循环处理每一分钟的数据
-    for i in range(0, 60):
+    for i in range(1, 61):
         # 计算当前分钟的时间戳，从现在到过去1小时
         current_time = base_time - i * 60 * 1000
         # 获取对应时间戳的数据
@@ -78,7 +78,7 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
     closest_row = data3m.iloc[closest_index]
     base_fixed_time = int(closest_row['open_time'])
     # 处理每3分钟、10分钟、24分钟、60分钟、120分钟的数据
-    for i in range(1, 60):
+    for i in range(1, 61):
         # 计算当前分钟的时间戳,从过去1小时到过去4小时
         current_time = base_fixed_time  - i * 3 * 60 * 1000
         # 获取对应时间戳的数据
@@ -99,10 +99,10 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
 
 
     # 找出与current_time最接近的值的索引,取得该数据中最接近basetime的time
-    closest_index = np.abs(data15m['open_time'] - base_time - 60 * 60 * 1000 - 36 * 3 * 60 * 1000).argmin()
+    closest_index = np.abs(data15m['open_time'] - base_time - 60 * 60 * 1000 - 60 * 3 * 60 * 1000).argmin()
     closest_row = data15m.iloc[closest_index]
     base_fixed_time = int(closest_row['open_time'])
-    for i in range(1, 16):
+    for i in range(1, 17):
         # 计算当前分钟的时间戳,从u过去4小时到过去8小时
         current_time = base_fixed_time - i * 15 * 60 * 1000
         # 获取对应时间戳的数据
@@ -123,10 +123,10 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
 
 
     # 找出与current_time最接近的值的索引,取得该数据中最接近basetime的time
-    closest_index = np.abs(data1h['open_time'] - base_time - 60 * 60 * 1000 - 36 * 3 * 60 * 1000 - 16 * 15 * 60 * 1000).argmin()
+    closest_index = np.abs(data1h['open_time'] - base_time - 60 * 60 * 1000 - 60 * 3 * 60 * 1000 - 16 * 15 * 60 * 1000).argmin()
     closest_row = data1h.iloc[closest_index]
     base_fixed_time = int(closest_row['open_time'])
-    for i in range(1, 16):
+    for i in range(1, 17):
         # 计算当前分钟的时间戳,从u过去8小时到过去24小时
         current_time = base_fixed_time - i * 60 * 60 * 1000
         # 获取对应时间戳的数据
@@ -146,10 +146,10 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
         Xlist.append(f'taker_buy_volume_60_{i}')
 
     # 找出与current_time最接近的值的索引,取得该数据中最接近basetime的time
-    closest_index = np.abs(data4h['open_time'] - base_time - 60 * 60 * 1000 - 36 * 3 * 60 * 1000 - 16 * 15 * 60 * 1000 - 16 * 60 * 60 * 1000).argmin()
+    closest_index = np.abs(data4h['open_time'] - base_time - 60 * 60 * 1000 - 60 * 3 * 60 * 1000 - 16 * 15 * 60 * 1000 - 16 * 60 * 60 * 1000).argmin()
     closest_row = data4h.iloc[closest_index]
     base_fixed_time = int(closest_row['open_time'])
-    for i in range(1, 18):
+    for i in range(1, 19):
         # 计算当前分钟的时间戳,从u过去24小时到过去96小时
         current_time = base_fixed_time - i * 240 * 60 * 1000
         # 获取对应时间戳的数据
@@ -165,10 +165,10 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
         Xlist.append(f'volume_240_{i}')
 
     # 找出与current_time最接近的值的索引,取得该数据中最接近basetime的time
-    closest_index = np.abs(data1d['open_time'] - base_time - 60 * 60 * 1000 - 36 * 3 * 60 * 1000 - 16 * 15 * 60 * 1000 - 16 * 60 * 60 * 1000 - 18 * 240 * 60 * 1000).argmin()
+    closest_index = np.abs(data1d['open_time'] - base_time - 60 * 60 * 1000 - 60 * 3 * 60 * 1000 - 16 * 15 * 60 * 1000 - 16 * 60 * 60 * 1000 - 18 * 240 * 60 * 1000).argmin()
     closest_row = data1d.iloc[closest_index]
     base_fixed_time = int(closest_row['open_time'])
-    for i in range(1, 32):
+    for i in range(1, 33):
         # 计算当前分钟的时间戳,从u过去96小时(4day)到过去36day
         current_time = base_fixed_time - i * 1440 * 60 * 1000
         # 获取对应时间戳的数据

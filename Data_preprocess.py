@@ -30,6 +30,7 @@ data15m = ReadData(direct15m)
 data1h = ReadData(direct1h)
 data4h = ReadData(direct4h)
 data1d = ReadData(direct1d)
+
 import DataSelect
 import random
 import pandas as pd
