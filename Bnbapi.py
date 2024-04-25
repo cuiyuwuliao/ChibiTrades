@@ -42,9 +42,7 @@ def checkBalance(symbol):
 
 #获取1根btc的分钟k线
 print(client.klines("BTCUSDT", "1m", limit = 1))
-#获取账号所有币种余额
-refreshAccountInfo()
-print(checkBalance('USDT'))
+
 
 
 
@@ -61,26 +59,46 @@ def placeOrder(params):
     return response
 
 
-# params = {
-#     'symbol': 'ETHUSDT',
-#     'side': 'BUY',
-#     'type': 'MARKET',
-#     'quantity': 0.01
-#     # 'timeInForce': 'GTC',
-#     # 'price': 70000
-# }
-
 params = {
-    'symbol': 'BTCUSDT',
-    'side': 'SELL',
-    'type': 'LIMIT',
-    'timeInForce': 'GTC',
-    'quantity': 0.002,
-    'price': 64000
+    'symbol': 'ETHUSDT',
+    'side': 'BUY',
+    'type': 'MARKET',
+    'quantity': 0.01
+    # 'timeInForce': 'GTC',
+    # 'price': 70000
 }
 
-placeOrder(params)
-refreshAccountInfo()
-print(checkBalance('USDT'))
-print(client.my_trades('BTCUSDT'))
+# params = {
+#     'symbol': 'BTCUSDT',
+#     'side': 'SELL',
+#     'type': 'LIMIT',
+#     'timeInForce': 'GTC',
+#     'quantity': 0.002,
+#     'price': 64000
+# }
+
+# placeOrder(params)
+# refreshAccountInfo()
+# print(checkBalance('USDT'))
+# print(client.my_trades('BTCUSDT'))
+
+
+print(client.klines("BTCUSDT", "1m", limit = 60))
+concatKlines_3m = client.klines("BTCUSDT", "3m", limit = 60)[20:]
+
+
+# 返回字典
+# 60根1分钟
+# 60根3分钟
+# 16根15分钟
+# 16根1小时
+# 18根4小时
+# 32根1天
+def getKlines():
+    klines = {"1m":[],"3m":[],"15m":[],"1h":[],"4h":[],"1d":[]}
+    klines["1m"] = client.klines("BTCUSDT", "1m", limit = 60)
+    klines["3m"] = client.klines("BTCUSDT", "1m", limit = 60)
+
+    return {}
+
 
