@@ -185,7 +185,7 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
     # 处理未来1-5分钟的1分钟数据
     high_y5 = -99999
     low_y5 = 99999
-    for i in range(1, 5):
+    for i in range(1, 6):
         # 计算当前分钟的时间戳，从现在到过去1小时
         current_time = base_time + i * 60 * 1000
         # 获取对应时间戳的数据
