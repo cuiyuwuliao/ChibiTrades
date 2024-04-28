@@ -97,8 +97,12 @@ concatKlines_3m = client.klines("BTCUSDT", "3m", limit = 60)[20:]
 def getKlines():
     klines = {"1m":[],"3m":[],"15m":[],"1h":[],"4h":[],"1d":[]}
     klines["1m"] = client.klines("BTCUSDT", "1m", limit = 60)
-    klines["3m"] = client.klines("BTCUSDT", "1m", limit = 60)
+    klines["3m"] = client.klines("BTCUSDT", "3m", limit = 80)[20:]
+    klines["15m"] = client.klines("BTCUSDT", "15m", limit = 60)
+    klines["1h"] = client.klines("BTCUSDT", "1h", limit = 60)
+    klines["4h"] = client.klines("BTCUSDT", "4h", limit = 60)
+    klines["1d"] = client.klines("BTCUSDT", "1d", limit = 60)
 
-    return {}
+    return klines
 
 
