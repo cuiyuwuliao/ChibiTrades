@@ -152,6 +152,9 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
     for i in range(1, 19):
         # 计算当前分钟的时间戳,从u过去24小时到过去96小时
         current_time = base_fixed_time - i * 240 * 60 * 1000
+        #18号数据缺失 临时使用代码
+
+        #临时代码结束
         # 获取对应时间戳的数据
         current_data = data4h[data4h['open_time'] == current_time].iloc[0]
         # 将数据存入新的DataFrame中
