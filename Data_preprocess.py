@@ -4,9 +4,10 @@ import multiple as mtp
 import time
 import random
 import DataSelect
+from datetime import datetime;
 
 # 项目目录
-proj_dir = r'D:\Binance'
+proj_dir = os.path.dirname(os.path.abspath(__file__))
 
 def ReadData(directory):
     # 指定目录路径
@@ -25,12 +26,12 @@ def ReadData(directory):
     print(combined_df)
     return combined_df
 
-direct1m = proj_dir+r'\BTCusdtData1m'
-direct3m = proj_dir+r'\BTCusdtData3m'
-direct15m = proj_dir+r'\BTCusdtData15m'
-direct1h = proj_dir+r'\BTCusdtData1h'
-direct4h = proj_dir+r'\BTCusdtData4h'
-direct1d = proj_dir+r'\BTCusdtData1d'
+direct1m = os.path.join(proj_dir, 'BTCusdtData1m')
+direct3m = os.path.join(proj_dir, 'BTCusdtData3m')
+direct15m = os.path.join(proj_dir, 'BTCusdtData15m')
+direct1h = os.path.join(proj_dir, 'BTCusdtData1h')
+direct4h = os.path.join(proj_dir, 'BTCusdtData4h')
+direct1d = os.path.join(proj_dir, 'BTCusdtData1d')
 
 data1m = ReadData(direct1m)
 data3m = ReadData(direct3m)
@@ -85,4 +86,5 @@ if __name__ == '__main__':
     #print(Ylist)
     result_df = pd.concat(res, ignore_index=True)
     # 输出为csv
-    result_df.to_csv(proj_dir+r'\fitdata0429.csv')
+    date = datetime.today().strftime("%m%d")
+    result_df.to_csv(os.path.join(proj_dir,'fitdata', f'fitdata{date}all.csv'))

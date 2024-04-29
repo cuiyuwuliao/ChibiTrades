@@ -7,11 +7,14 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
+import os
+from datetime import datetime
 
 # 项目目录
-proj_dir = r'D:\Binance'
+proj_dir = os.path.dirname(os.path.abspath(__file__))
+date = datetime.today().strftime("%m%d")
+df = pd.read_csv(os.path.join(proj_dir,'fitdata', f'fitdata{date}all.csv'))
 
-df = pd.read_csv(proj_dir+r'\fitdata0429all.csv')
 
 r'''
 #开始验证模型预测可靠性
