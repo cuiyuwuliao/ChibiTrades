@@ -8,9 +8,9 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 
-df = pd.read_csv(r'D:\Binance\fitdata0428_2.csv')
+df = pd.read_csv(r'D:\Binance\fitdata0429all.csv')
 
-
+r'''
 #开始验证模型预测可靠性
 #数据集时间戳是:1684108800, 1714175940
 #验证尺度： 使用基准时间之前的所有数据，预测基准时间+1天之内
@@ -70,7 +70,7 @@ r2_list_combined = np.concatenate(r2_lists)
 print("所有模型训练并验证完成。")
 print("Combined R² Scores:", r2_list_combined)
 print("Mean R² Score:", np.mean(r2_list_combined))
-
+'''
 print("回车继续训练模型并保存")
 ### 开始训练模型并保存模型文件
 
@@ -83,11 +83,11 @@ def train_and_save_model(X, y, file_prefix):
     rf_model = RandomForestRegressor(n_estimators=1000, random_state=42)
     rf_model.fit(X, y)
     current_date = datetime.now().strftime('%Y-%m-%d')
-    file_name = f'{file_prefix}_{current_date}2.pkl'
+    file_name = f'{file_prefix}_{current_date}.pkl'
     joblib.dump(rf_model, file_name)
 
 
-X = df[Xlistall[1:1000]]
+X = df[Xlistall[1:800]]
 y_h5 = df['high_y5']
 y_l5 = df['low_y5']
 y_5 = df['close_y1_5']
@@ -97,4 +97,14 @@ thread1 = Thread(target=train_and_save_model, args=(X, y_h5, "rfmodel_high_yh5")
 thread2 = Thread(target=train_and_save_model, args=(X, y_l5, "rfmodel_high_yl5"))
 thread3 = Thread(target=train_and_save_model, args=(X, y_5, "rfmodel_high_y5"))
 
-t
+# 启动线程
+thread1.start()
+thread2.start()
+thread3.start()
+
+# 等待所有线程完成
+thread1.join()
+thread2.join()
+thread3.join()
+
+print("所有模型训练并保存完成。")
