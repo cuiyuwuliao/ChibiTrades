@@ -4,6 +4,8 @@ from binance.um_futures import UMFutures #U本位，默认用U本位
 import re
 import sys
 
+# 使用前先加载环境，cd到ChibiTrades目录，然后控制台运行: source ./venv/bin/activate
+
 #测试账号和url
 testnet_future = 'https://testnet.binancefuture.com'
 testnet_spot = 'https://testnet.binance.vision'
@@ -20,14 +22,6 @@ keys_future = {
 #最长等待response时长
 recvWindow = 10000 #10秒
 
-# 合约下单params参数文档
-# https://binance-docs.github.io/apidocs/futures/en/#new-order-trade
-# 现货下单params参数文档
-# https://binance-docs.github.io/apidocs/spot/en/#new-order-trade
-
-#获取同路径“keys.txt”文件中的api keys，格式如下
-#apiKey = "your key" (记得加引号)
-#secretKey = "your key" (记得加引号)
 def getKeys():
     with open('keys.txt', 'r') as file:
         data = file.read()
@@ -101,58 +95,23 @@ class ChibiClient:
         return self.client.get_all_orders(symbol)
     
     def placeOrder(self, params):
-        return self.client.new_order(**params, recvWindow = recvWindow)
+        response = self.client.new_order(**params, recvWindow = recvWindow)
+        return response
     
     def changeLeverage(self, symbol, leverage):
         response = self.client.change_leverage(symbol, leverage, recvWindow = recvWindow)
         return response
-        
+    
+    def cancelOrder(self, symbol, orderId):
+        return self.client.cancel_order(symbol = symbol, orderId = orderId, recvWindow = recvWindow)
+
+
+#返回登陆后的现货账户  
 def getSpotClient(isTest):
     client = ChibiClient(accountType = 'spot', test = isTest, keys = keys_spot if isTest else getKeys())
     return client
 
+#返回登陆后的合约账户  
 def getFutureClient(isTest):
     client = ChibiClient(accountType = 'future', test = isTest, keys = keys_future if isTest else getKeys())
     return client
-
-
-
-
-# params = {
-#     'symbol': 'ETHUSDT',
-#     'side': 'BUY',
-#     'type': 'MARKET',
-#     'quantity': 0.1
-# }
-
-# params = {
-#     'symbol': 'BTCUSDT',
-#     'side': 'SELL',
-#     'type': 'LIMIT',
-#     'timeInForce': 'GTC',
-#     'quantity': 0.002,
-#     'price': 64000
-# }
-
-# client = getFutureClient(isTest = True)
-# print(client.getMarkKlines('BTCUSDT', '1d', 5))
-# print(client.getTrades('BTCUSDT'))
-# print(client.changeLeverage('BTCUSDT', 5))
-# print(client.placeOrder(**params))
-
-
-
-
-
-
-
-
-
-
-# #获取1根btc的分钟k线
-# print(client.klines("BTCUSDT", "1m", limit = 1))
-
-# #获取正在进行的交易单
-# print(client.my_trades('BTCUSDT'))
-
-
