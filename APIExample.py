@@ -1,4 +1,4 @@
-import BnbAPI
+import API
 
 
 # 使用前先加载环境，cd到ChibiTrades目录，然后控制台运行: source ./venv/bin/activate
@@ -21,7 +21,7 @@ import BnbAPI
 
 
 #登陆模拟的合约账户，如果要用真实账号，需要保证keys.txt文件里有账号信息
-client = BnbAPI.getFutureClient(isTest = True)
+client = API.getFutureClient(isTest = True)
 
 #获取两根一分钟的标记价格k线
 print(client.getMarkKlines('BTCUSDT', '1m', 2))
