@@ -214,6 +214,7 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
     # 创建新的DataFrame
     new_df = pd.DataFrame([new_data])
     # 打印新的DataFrame
-    print(new_df)
-    return new_df,Xlist,Ylist
+    #print(new_df)
+    #return new_df,Xlist,Ylist
+    return new_df
 

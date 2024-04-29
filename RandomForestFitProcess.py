@@ -8,7 +8,10 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 
-df = pd.read_csv(r'D:\Binance\fitdata0429all.csv')
+# 项目目录
+proj_dir = r'D:\Binance'
+
+df = pd.read_csv(proj_dir+r'\fitdata0429all.csv')
 
 r'''
 #开始验证模型预测可靠性

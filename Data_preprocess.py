@@ -1,5 +1,13 @@
 import os
 import pandas as pd
+import multiple as mtp
+import time
+import random
+import DataSelect
+
+# 项目目录
+proj_dir = r'D:\Binance'
+
 def ReadData(directory):
     # 指定目录路径
     # 读取目录下的所有文件名
@@ -17,12 +25,12 @@ def ReadData(directory):
     print(combined_df)
     return combined_df
 
-direct1m = r'D:\Binance\BTCusdtData1m'
-direct3m = r'D:\Binance\BTCusdtData3m'
-direct15m = r'D:\Binance\BTCusdtData15m'
-direct1h = r'D:\Binance\BTCusdtData1h'
-direct4h = r'D:\Binance\BTCusdtData4h'
-direct1d = r'D:\Binance\BTCusdtData1d'
+direct1m = proj_dir+r'\BTCusdtData1m'
+direct3m = proj_dir+r'\BTCusdtData3m'
+direct15m = proj_dir+r'\BTCusdtData15m'
+direct1h = proj_dir+r'\BTCusdtData1h'
+direct4h = proj_dir+r'\BTCusdtData4h'
+direct1d = proj_dir+r'\BTCusdtData1d'
 
 data1m = ReadData(direct1m)
 data3m = ReadData(direct3m)
@@ -30,10 +38,6 @@ data15m = ReadData(direct15m)
 data1h = ReadData(direct1h)
 data4h = ReadData(direct4h)
 data1d = ReadData(direct1d)
-
-import threading
-import random
-import DataSelect
 
 # 当前数据中最新时间戳 最老时间戳
 base_time_latest = int(data1m['open_time'].max()/1000)
@@ -47,52 +51,38 @@ timestamp1 = [random.randint(base_time_fix_latest-15*24*3600, base_time_fix_late
 timestamp2 = [random.randint(base_time_fix_oldest, base_time_fix_latest) for _ in range(15000)]
 timestamps = timestamp1+timestamp2
 
-
-# 分成10个子列表
-timestamps_per_thread = len(timestamps) // 10
-timestamp_chunks = [timestamps[i:i+timestamps_per_thread] for i in range(0, len(timestamps), timestamps_per_thread)]
-
-# 定义线程类
-class MyThread(threading.Thread):
-    def __init__(self, timestamps):
-        super().__init__()
-        self.timestamps = timestamps
-
-    def run(self):
-        global Xlist
-        global Ylist
-        dfs = []
-        for ts in self.timestamps:
-            df, Xlist, Ylist = DataSelect.SelectFitdata(data1m, data3m, data15m, data1h, data4h, data1d, base_time=ts*1000)
-            dfs.append(df)
-        with lock:
-            results.extend(dfs)
-
-# 创建锁
-lock = threading.Lock()
-
 # 定义全局变量
-results = []
-Xlist = []
-Ylist = []
+#Xlist = []
+#Ylist = []
 
-# 创建并启动线程
-threads = []
-for chunk in timestamp_chunks:
-    thread = MyThread(chunk)
-    thread.start()
-    threads.append(thread)
+# 处理数据的进程
+def processDFS(q, cnt, a, b):
+    #global Xlist
+    #global Ylist
+    dfs = []
+    for idx in range(a, b):
+        ts = timestamps[idx]
+        cnt.value += 1
+        print('cnt='+str(cnt.value)+',idx='+str(idx))
+        #df, Xlist, Ylist = DataSelect.SelectFitdata(data1m, data3m, data15m, data1h, data4h, data1d, base_time=ts*1000)  # 假设SelectFitdata函数可以根据时间戳返回一个DataFrame
+        df = DataSelect.SelectFitdata(data1m, data3m, data15m, data1h, data4h, data1d, base_time=ts*1000)
+        dfs.append(df)
+    q.put(dfs)
 
-# 等待所有线程结束
-for thread in threads:
-    thread.join()
-
-# 使用concat函数将所有DataFrame按行连接
-result_df = pd.concat(results, ignore_index=True)
-
-# 输出为csv
-result_df.to_csv(r'D:\Binance\fitdata0428_2.csv')
-
-print(Xlist)
-print(Ylist)
-
+if __name__ == '__main__':  
+    startTime = time.time()
+    # 使用多进程进行数据预处理
+    res = mtp.mtpcs(8, 20000, processDFS)
+    print('res的长度')
+    print(len(res))
+    endTime = time.time()
+    runTime = endTime - startTime
+    print('运行时间：'+str(runTime)+'s')
+    ''' for _ in range(2):
+        print(queue.get()) '''
+    # 使用concat函数将所有DataFrame按行连接
+    #print(Xlist)
+    #print(Ylist)
+    result_df = pd.concat(res, ignore_index=True)
+    # 输出为csv
+    result_df.to_csv(proj_dir+r'\fitdata0429.csv')
