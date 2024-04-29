@@ -20,6 +20,11 @@ keys_future = {
 #最长等待response时长
 recvWindow = 10000 #10秒
 
+# 合约下单params参数文档
+# https://binance-docs.github.io/apidocs/futures/en/#new-order-trade
+# 现货下单params参数文档
+# https://binance-docs.github.io/apidocs/spot/en/#new-order-trade
+
 #获取同路径“keys.txt”文件中的api keys，格式如下
 #apiKey = "your key" (记得加引号)
 #secretKey = "your key" (记得加引号)
@@ -141,10 +146,7 @@ def getFutureClient(isTest):
 
 
 
-# 合约下单params参数文档
-# https://binance-docs.github.io/apidocs/futures/en/#new-order-trade
-# 现货下单params参数文档
-# https://binance-docs.github.io/apidocs/spot/en/#new-order-trade
+
 
 
 # #获取1根btc的分钟k线
