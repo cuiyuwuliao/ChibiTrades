@@ -79,8 +79,6 @@ if __name__ == '__main__':
     endTime = time.time()
     runTime = endTime - startTime
     print('运行时间：'+str(runTime)+'s')
-    ''' for _ in range(2):
-        print(queue.get()) '''
     # 使用concat函数将所有DataFrame按行连接
     #print(Xlist)
     #print(Ylist)
