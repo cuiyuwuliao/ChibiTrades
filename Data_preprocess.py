@@ -87,4 +87,7 @@ if __name__ == '__main__':
     result_df = pd.concat(res, ignore_index=True)
     # 输出为csv
     date = datetime.today().strftime("%m%d")
-    result_df.to_csv(os.path.join(proj_dir,'fitdata', f'fitdata{date}all.csv'))
+    directory = os.path.join(proj_dir,'fitdata')
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    result_df.to_csv(os.path.join(directory, f'fitdata{date}all.csv'))
