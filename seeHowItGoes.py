@@ -9,9 +9,14 @@ l = len(preds)
 
 pred_5ms = preds['price_5m'].iloc[1:l-5]
 reals = preds['currentPrice'].iloc[6:l]
+highs = preds['high_5m'].iloc[1:l-5]
+lows = preds['low_5m'].iloc[1:l-5]
+
 
 table_pred_5ms = pred_5ms.values
 table_reals = reals.values
+table_highs = highs.values
+table_lows = lows.values
 
-gp.draw([table_pred_5ms, table_reals], labels=['预测曲线','实际曲线'], lines=2, grid=True)
+gp.draw([table_pred_5ms, table_reals, table_highs, table_lows], labels=['预测曲线','实际曲线', '预测高价', '预测低价'], lines=4, grid=True)
 

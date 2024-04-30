@@ -9,6 +9,7 @@ import mplcursors
 # labels: 可选，如果要画多条曲线对比的话建议给每个曲线起个名字，放在labels数组里
 # grid: 可选，是否显示网格，默认否
 def draw(data, labels=None, lines=1, xAxis=None, grid=False):
+    # 设置一下中文字体，让中文字在图里也能正常显示
     rcParams['font.family'] = 'SimHei'
     if lines < 1:
         lines = 1
