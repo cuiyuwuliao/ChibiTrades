@@ -38,7 +38,7 @@ def merge_and_save_models(models, file_prefix):
     for model in models[1:]:
         merged_model.estimators_ += model.estimators_
     current_date = datetime.now().strftime('%Y-%m-%d')
-    file_name = f'{file_prefix}_merged_{current_date}.pkl'
+    file_name = f'RFmodels/{file_prefix}_merged_{current_date}.pkl'
     joblib.dump(merged_model, file_name)
     print("Models merged and saved successfully.")
 
