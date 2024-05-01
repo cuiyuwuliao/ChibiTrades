@@ -252,30 +252,6 @@ while True:
     data1d = pd.read_csv('data1d.csv')
     file_lock1d.release()
 
-    data1m['open'] = (data1m['open'] - current_price) / current_price
-    data1m['high'] = (data1m['high'] - current_price) / current_price
-    data1m['low'] = (data1m['low'] - current_price) / current_price
-    data1m['close'] = (data1m['close'] - current_price) / current_price
-    data3m['open'] = (data3m['open'] - current_price) / current_price
-    data3m['high'] = (data3m['high'] - current_price) / current_price
-    data3m['low'] = (data3m['low'] - current_price) / current_price
-    data3m['close'] = (data3m['close'] - current_price) / current_price
-    data15m['open'] = (data15m['open'] - current_price) / current_price
-    data15m['high'] = (data15m['high'] - current_price) / current_price
-    data15m['low'] = (data15m['low'] - current_price) / current_price
-    data15m['close'] = (data15m['close'] - current_price) / current_price
-    data1h['open'] = (data1h['open'] - current_price) / current_price
-    data1h['high'] = (data1h['high'] - current_price) / current_price
-    data1h['low'] = (data1h['low'] - current_price) / current_price
-    data1h['close'] = (data1h['close'] - current_price) / current_price
-    data4h['open'] = (data4h['open'] - current_price) / current_price
-    data4h['high'] = (data4h['high'] - current_price) / current_price
-    data4h['low'] = (data4h['low'] - current_price) / current_price
-    data4h['close'] = (data4h['close'] - current_price) / current_price
-    data1d['open'] = (data1d['open'] - current_price) / current_price
-    data1d['high'] = (data1d['high'] - current_price) / current_price
-    data1d['low'] = (data1d['low'] - current_price) / current_price
-    data1d['close'] = (data1d['close'] - current_price) / current_price
     data1m = data1m.sort_values('open_time', ascending=False)
     data3m = data3m.sort_values('open_time', ascending=False)
     data15m = data15m.sort_values('open_time', ascending=False)
@@ -283,8 +259,61 @@ while True:
     data4h = data4h.sort_values('open_time', ascending=False)
     data1d = data1d.sort_values('open_time', ascending=False)
 
+    latest_volume = data1m.loc[0]['volume']
+    latest_count = data1m.loc[0]['count']
+    latest_taker_buy_volume = data1m.loc[0]['taker_buy_volume']
+
+
+    data1m['open'] = (data1m['open'] - current_price) / current_price
+    data1m['high'] = (data1m['high'] - current_price) / current_price
+    data1m['low'] = (data1m['low'] - current_price) / current_price
+    data1m['close'] = (data1m['close'] - current_price) / current_price
+    data1m['volume'] = (data1m['volume'] - latest_volume) / latest_volume
+    data1m['count'] = (data1m['count'] - latest_count) / latest_count
+    data1m['taker_buy_volume'] = (data1m['taker_buy_volume'] - latest_taker_buy_volume) / latest_taker_buy_volume
+
+    data3m['open'] = (data3m['open'] - current_price) / current_price
+    data3m['high'] = (data3m['high'] - current_price) / current_price
+    data3m['low'] = (data3m['low'] - current_price) / current_price
+    data3m['close'] = (data3m['close'] - current_price) / current_price
+    data3m['volume'] = (data3m['volume'] / 3 - latest_volume) / latest_volume
+    data3m['count'] = (data3m['count'] / 3 - latest_count) / latest_count
+    data3m['taker_buy_volume'] = (data3m['taker_buy_volume'] / 3 - latest_taker_buy_volume) / latest_taker_buy_volume
+
+    data15m['open'] = (data15m['open'] - current_price) / current_price
+    data15m['high'] = (data15m['high'] - current_price) / current_price
+    data15m['low'] = (data15m['low'] - current_price) / current_price
+    data15m['close'] = (data15m['close'] - current_price) / current_price
+    data15m['volume'] = (data15m['volume'] / 15 - latest_volume) / latest_volume
+    data15m['count'] = (data15m['count'] / 15 - latest_count) / latest_count
+    data15m['taker_buy_volume'] = (data15m['taker_buy_volume'] / 15 - latest_taker_buy_volume) / latest_taker_buy_volume
+
+    data1h['open'] = (data1h['open'] - current_price) / current_price
+    data1h['high'] = (data1h['high'] - current_price) / current_price
+    data1h['low'] = (data1h['low'] - current_price) / current_price
+    data1h['close'] = (data1h['close'] - current_price) / current_price
+    data1h['volume'] = (data1h['volume'] / 60 - latest_volume) / latest_volume
+    data1h['count'] = (data1h['count'] / 60 - latest_count) / latest_count
+    data1h['taker_buy_volume'] = (data1h['taker_buy_volume'] / 60 - latest_taker_buy_volume) / latest_taker_buy_volume
+
+    data4h['open'] = (data4h['open'] - current_price) / current_price
+    data4h['high'] = (data4h['high'] - current_price) / current_price
+    data4h['low'] = (data4h['low'] - current_price) / current_price
+    data4h['close'] = (data4h['close'] - current_price) / current_price
+    data4h['volume'] = (data4h['volume'] / 240 - latest_volume) / latest_volume
+    data4h['count'] = (data4h['count'] / 240 - latest_count) / latest_count
+    data4h['taker_buy_volume'] = (data4h['taker_buy_volume'] / 240 - latest_taker_buy_volume) / latest_taker_buy_volume
+
+    data1d['open'] = (data1d['open'] - current_price) / current_price
+    data1d['high'] = (data1d['high'] - current_price) / current_price
+    data1d['low'] = (data1d['low'] - current_price) / current_price
+    data1d['close'] = (data1d['close'] - current_price) / current_price
+    data1d['volume'] = (data1d['volume'] / 1440 - latest_volume) / latest_volume
+    data1d['count'] = (data1d['count'] / 1440 - latest_count) / latest_count
+    data1d['taker_buy_volume'] = (data1d['taker_buy_volume'] / 1440 - latest_taker_buy_volume) / latest_taker_buy_volume
+
     Xdata = {}
-    datatime = float(data1m['open_time'].max())+60*1000  #最新的行情是上一分钟的事情，获取的现价是这分钟的现价，预测也是这分钟的，所以+1min
+    datatime = float(data1m['open_time'].max())+60*1000  #最新的行情是上一分钟的事情，获取的现价是这分钟的现价，预测也是这分钟做的，所以+1min
     # 循环处理每一分钟的数据
     for i in range(1, 61):
         # 将数据存入新的DataFrame中

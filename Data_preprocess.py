@@ -73,7 +73,7 @@ def processDFS(q, cnt, a, b):
 if __name__ == '__main__':  
     startTime = time.time()
     # 使用多进程进行数据预处理
-    res = mtp.mtpcs(8, 20000, processDFS)
+    res = mtp.mtpcs(8, 25000, processDFS)
     print('res的长度')
     print(len(res))
     endTime = time.time()
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     #print(Xlist)
     #print(Ylist)
     result_df = pd.concat(res, ignore_index=True)
-    # 输出为csv
+    # 输出为csv 
     date = datetime.today().strftime("%m%d")
     directory = os.path.join(proj_dir,'fitdata')
     if not os.path.exists(directory):

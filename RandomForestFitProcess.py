@@ -82,7 +82,6 @@ print("回车继续训练模型并保存")
 
 import joblib
 from datetime import datetime
-from threading import Thread
 from sklearn.ensemble import RandomForestRegressor
 
 def train_and_save_model(X, y, file_prefix):
@@ -93,24 +92,16 @@ def train_and_save_model(X, y, file_prefix):
     joblib.dump(rf_model, file_name)
 
 
-X = df[Xlistall[1:800]]
+X = df[Xlistall[1:]]
 y_h5 = df['high_y5']
 y_l5 = df['low_y5']
 y_5 = df['close_y1_5']
-# 创建并启动线程
-threads = []
-thread1 = Thread(target=train_and_save_model, args=(X, y_h5, "rfmodel_high_yh5"))
-thread2 = Thread(target=train_and_save_model, args=(X, y_l5, "rfmodel_high_yl5"))
-thread3 = Thread(target=train_and_save_model, args=(X, y_5, "rfmodel_high_y5"))
 
-# 启动线程
-thread1.start()
-thread2.start()
-thread3.start()
+train_and_save_model(X,y_h5,'High')
+print("模型1训练并保存完成。")
 
-# 等待所有线程完成
-thread1.join()
-thread2.join()
-thread3.join()
+train_and_save_model(X,y_l5,'Low')
+print("模型2训练并保存完成。")
 
+train_and_save_model(X,y_5,'Close')
 print("所有模型训练并保存完成。")
