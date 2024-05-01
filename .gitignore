@@ -2,3 +2,6 @@ keys.txt
 .DS_Store
 fitdata/
 venv/
+RFmodels/
+.idea/
+/__pycache__
