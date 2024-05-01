@@ -15,6 +15,25 @@ proj_dir = os.path.dirname(os.path.abspath(__file__))
 date = datetime.today().strftime("%m%d")
 df = pd.read_csv(os.path.join(proj_dir,'fitdata', f'fitdata{date}all.csv'))
 
+def remove_rows_with_inf_or_nan(X):
+    # 检查每一行是否包含空值或无穷大值
+    mask = X.isna().any(axis=1) | X.isin([float('inf'), -float('inf')]).any(axis=1)
+
+    # 获取包含空值或无穷大值的行的'base_time'列的值
+    rows_with_inf_or_nan = X[mask]['base_time'].values
+
+    # 删除包含空值或无穷大值的行
+    X_cleaned = X.dropna(subset=X.columns[mask], how='any')
+
+    return X_cleaned, rows_with_inf_or_nan
+
+# 调用函数并输出结果
+df, rows_with_inf_or_nan = remove_rows_with_inf_or_nan(df)
+
+# 打印被删除的行的'base_time'列的值
+print("包含inf或空值的行的'base_time'列的值:")
+print(rows_with_inf_or_nan)
+
 
 r'''
 #开始验证模型预测可靠性
@@ -77,31 +96,42 @@ print("所有模型训练并验证完成。")
 print("Combined R² Scores:", r2_list_combined)
 print("Mean R² Score:", np.mean(r2_list_combined))
 '''
-print("回车继续训练模型并保存")
+
 ### 开始训练模型并保存模型文件
 
-import joblib
+import multiprocessing
 from datetime import datetime
 from sklearn.ensemble import RandomForestRegressor
+import joblib
+import copy
 
 def train_and_save_model(X, y, file_prefix):
+    X_copy = copy.deepcopy(X)
+    y_copy = copy.deepcopy(y)
     rf_model = RandomForestRegressor(n_estimators=1000, random_state=42)
-    rf_model.fit(X, y)
+    rf_model.fit(X_copy, y_copy)
     current_date = datetime.now().strftime('%Y-%m-%d')
     file_name = f'{file_prefix}_{current_date}.pkl'
     joblib.dump(rf_model, file_name)
+    print(f"模型{file_prefix}训练并保存完成。")
 
+def main():
+    X = df[Xlistall[1:]]
+    y_h5 = df['high_y5']
+    y_l5 = df['low_y5']
+    y_5 = df['close_y1_5']
 
-X = df[Xlistall[1:]]
-y_h5 = df['high_y5']
-y_l5 = df['low_y5']
-y_5 = df['close_y1_5']
+    processes = []
+    for data, prefix in [(y_h5, 'High'), (y_l5, 'Low'), (y_5, 'Close')]:
+        p = multiprocessing.Process(target=train_and_save_model, args=(X, data, prefix))
+        processes.append(p)
+        p.start()
 
-train_and_save_model(X,y_h5,'High')
-print("模型1训练并保存完成。")
+    for p in processes:
+        p.join()
 
-train_and_save_model(X,y_l5,'Low')
-print("模型2训练并保存完成。")
+    print("所有模型训练并保存完成。")
 
-train_and_save_model(X,y_5,'Close')
-print("所有模型训练并保存完成。")
+if __name__ == "__main__":
+    main()
+
