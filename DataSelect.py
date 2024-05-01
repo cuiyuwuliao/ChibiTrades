@@ -22,34 +22,68 @@ def SelectFitdata(data1minput,data3minput,data15minput,data1hinput,data4hinput,d
 
 
 
-    # 预处理，将所有价格减去基准价格再除以基准价格
+    # 预处理，将所有价格减去基准价格再除以基准价格，所有交易量也做处理
     current_price = data1m[data1m['open_time'] == base_time]['open'].iloc[0]
+    current_volume = data1m[data1m['open_time'] == base_time]['volume'].iloc[0]
+    current_count = data1m[data1m['open_time'] == base_time]['count'].iloc[0]
+    current_taker_buy_volume = data1m[data1m['open_time'] == base_time]['taker_buy_volume'].iloc[0]
+    
     new_data['current_price'] = current_price
+    new_data['current_volume'] = current_volume
+    new_data['current_count'] = current_count
+    new_data['current_taker_buy_volume'] = current_taker_buy_volume
+    
     Xlist.append('current_price')
+    
     data1m['open'] = (data1m['open'] - current_price)/current_price
     data1m['high'] = (data1m['high'] - current_price)/current_price
     data1m['low'] = (data1m['low'] - current_price)/current_price
     data1m['close'] = (data1m['close'] - current_price)/current_price
+    data1m['volume'] = (data1m['volume'] - current_volume) / current_volume
+    data1m['count'] = (data1m['count'] - current_count) / current_count
+    data1m['taker_buy_volume'] = (data1m['taker_buy_volume'] - current_taker_buy_volume) / current_taker_buy_volume
+    
     data3m['open'] = (data3m['open'] - current_price)/current_price
     data3m['high'] = (data3m['high'] - current_price)/current_price
     data3m['low'] = (data3m['low'] - current_price)/current_price
     data3m['close'] = (data3m['close'] - current_price)/current_price
+    data3m['volume'] = (data3m['volume'] - current_volume) / current_volume
+    data3m['count'] = (data3m['count'] - current_count) / current_count
+    data3m['taker_buy_volume'] = (data3m['taker_buy_volume'] - current_taker_buy_volume) / current_taker_buy_volume
+    
+    
     data15m['open'] = (data15m['open'] - current_price)/current_price
     data15m['high'] = (data15m['high'] - current_price)/current_price
     data15m['low'] = (data15m['low'] - current_price)/current_price
     data15m['close'] = (data15m['close'] - current_price)/current_price
+    data15m['volume'] = (data15m['volume'] - current_volume) / current_volume
+    data15m['count'] = (data15m['count'] - current_count) / current_count
+    data15m['taker_buy_volume'] = (data15m['taker_buy_volume'] - current_taker_buy_volume) / current_taker_buy_volume
+    
     data1h['open'] = (data1h['open'] - current_price)/current_price
     data1h['high'] = (data1h['high'] - current_price)/current_price
     data1h['low'] = (data1h['low'] - current_price)/current_price
     data1h['close'] = (data1h['close'] - current_price)/current_price
+    data1h['volume'] = (data1h['volume'] - current_volume) / current_volume
+    data1h['count'] = (data1h['count'] - current_count) / current_count
+    data1h['taker_buy_volume'] = (data1h['taker_buy_volume'] - current_taker_buy_volume) / current_taker_buy_volume
+    
     data4h['open'] = (data4h['open'] - current_price)/current_price
     data4h['high'] = (data4h['high'] - current_price)/current_price
     data4h['low'] = (data4h['low'] - current_price)/current_price
     data4h['close'] = (data4h['close'] - current_price)/current_price
+    data4h['volume'] = (data4h['volume'] - current_volume) / current_volume
+    data4h['count'] = (data4h['count'] - current_count) / current_count
+    data4h['taker_buy_volume'] = (data4h['taker_buy_volume'] - current_taker_buy_volume) / current_taker_buy_volume
+    
+    
     data1d['open'] = (data1d['open'] - current_price)/current_price
     data1d['high'] = (data1d['high'] - current_price)/current_price
     data1d['low'] = (data1d['low'] - current_price)/current_price
     data1d['close'] = (data1d['close'] - current_price)/current_price
+    data1d['volume'] = (data1d['volume'] - current_volume) / current_volume
+    data1d['count'] = (data1d['count'] - current_count) / current_count
+    data1d['taker_buy_volume'] = (data1d['taker_buy_volume'] - current_taker_buy_volume) / current_taker_buy_volume
 
     # 循环处理每一分钟的数据
     for i in range(1, 61):

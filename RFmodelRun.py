@@ -284,7 +284,7 @@ while True:
     data1d = data1d.sort_values('open_time', ascending=False)
 
     Xdata = {}
-    datatime = data1m['open_time'].max()+60*1000  #最新的行情是上一分钟的事情，获取的现价是这分钟的现价，预测也是这分钟的，所以+1min
+    datatime = float(data1m['open_time'].max())+60*1000  #最新的行情是上一分钟的事情，获取的现价是这分钟的现价，预测也是这分钟的，所以+1min
     # 循环处理每一分钟的数据
     for i in range(1, 61):
         # 将数据存入新的DataFrame中
