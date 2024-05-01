@@ -23,6 +23,8 @@ key = ""
 secret = ""
 um_futures_client = UMFutures(key=key, secret=secret)
 
+date = datetime.today().strftime("%m%d")
+
 
 
 # 创建一个锁对象
@@ -220,7 +222,7 @@ PredictCSV = {
     'price_5m_confidence': 0
 }
 PredictCSV = pd.DataFrame.from_dict(PredictCSV, orient='index').T
-PredictCSV.to_csv(r'PredictNow.csv',index=False)
+PredictCSV.to_csv(rf'predicts/PredictNow{date}.csv',index=False)
 
 
 while True:
@@ -398,7 +400,7 @@ while True:
     PredictNow['price_5m_confidence'] = 1-(model_price_std_dev*10000000/PredictNow['price_5m'])
     PredictNow = pd.DataFrame.from_dict(PredictNow, orient='index').T
     # 在这里进行文件写入操作
-    PredictNow.to_csv("PredictNow.csv",mode='a', header=False, index=False)
+    PredictNow.to_csv(rf'predicts/PredictNow{date}.csv',mode='a', header=False, index=False)
 
     timestamp_TradeStop = int(time.time())
     if (timestamp_TradeStop - timestamp_TradeStart) <= 60:
