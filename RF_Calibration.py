@@ -1,5 +1,7 @@
 ### 开始训练模型并保存模型文件
 import os
+import time
+
 import pandas as pd
 import joblib
 from datetime import datetime
@@ -58,11 +60,11 @@ def MultiProcessFit_RF(X, y_data, model_name):
         models = [model.result() for model in models]
 
     # 合并模型
-    merge_and_save_models(models, 'High')
+    merge_and_save_models(models, model_name)
     print("模型训练并保存完成。")
 
 if __name__ == '__main__':
-    '''    
+
     # 项目目录
     proj_dir = os.path.dirname(os.path.abspath(__file__))
     date = datetime.today().strftime("%m%d")
@@ -74,13 +76,23 @@ if __name__ == '__main__':
     print(rows_with_inf_or_nan)
     Xdata = df[Xlistused]
 
-    # MultiProcessFit_RF(X=Xdata, y_data=df['high_y5'], model_name='High')
+    MultiProcessFit_RF(X=Xdata, y_data=df['high_y5'], model_name='High')
+    time.sleep(120) #等待进程彻底结束
     MultiProcessFit_RF(X=Xdata, y_data=df['low_y5'], model_name='Low')
+    time.sleep(120) #等待进程彻底结束
     MultiProcessFit_RF(X=Xdata, y_data=df['close_y1_5'], model_name='Close')
+
+
     '''
+    #融合失败的时候手动融合一下
     models = []
     for i in range(15):
-        models.append(joblib.load(f'RFmodels/High_{i}_2024-05-01.pkl'))
-    merge_and_save_models(models,'High')
+        proj_dir = os.path.dirname(os.path.abspath(__file__))
+        file_name = os.path.join(proj_dir, 'RFmodels', f'High_{i}_2024-05-02.pkl')
+        models.append(joblib.load(file_name))
+    merge_and_save_models(models, 'High')
+    '''
+
+
 
 

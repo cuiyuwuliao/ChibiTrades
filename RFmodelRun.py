@@ -9,9 +9,9 @@ import threading
 import joblib
 from binance.error import ClientError
 
-rf_model_high_filedir = 'RFmodels/High_merged_2024-05-01.pkl' #更改为模型文件 高价
-rf_model_low_filedir = 'RFmodels/Low_merged_2024-05-01.pkl' #更改为模型文件 低价
-rf_model_price_filedir = 'RFmodels/Close_merged_2024-05-01.pkl' #更改为模型文件 收盘价
+rf_model_high_filedir = 'RFmodels/High_merged_2024-05-02.pkl' #更改为模型文件 高价
+rf_model_low_filedir = 'RFmodels/Low_merged_2024-05-02.pkl' #更改为模型文件 低价
+rf_model_price_filedir = 'RFmodels/Close_merged_2024-05-03.pkl' #更改为模型文件 收盘价
 
 # 加载模型
 rf_model_high = joblib.load(rf_model_high_filedir)

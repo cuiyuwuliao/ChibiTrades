@@ -46,10 +46,11 @@ base_time_fix_latest = base_time_latest - 5*60 - 1 #回退5分钟
 
 base_time_oldest = int(data1m['open_time'].min()/1000)
 base_time_fix_oldest = base_time_oldest + 36*24*3600 + 1 #增加36天
-
+print(base_time_fix_oldest)
+print(base_time_fix_latest)
 # 随机生成时间戳
-timestamp1 = [random.randint(base_time_fix_latest-15*24*3600, base_time_fix_latest) for _ in range(5000)] #注意此处用秒为单位 而不是毫秒
-timestamp2 = [random.randint(base_time_fix_oldest, base_time_fix_latest) for _ in range(20000)]
+timestamp1 = [random.randint(base_time_fix_latest-15*24*3600, base_time_fix_latest) for _ in range(10000)] #注意此处用秒为单位 而不是毫秒
+timestamp2 = [random.randint(base_time_fix_oldest+180*24*3600, base_time_fix_latest) for _ in range(50000)]
 timestamps = timestamp1+timestamp2
 
 # 定义全局变量
@@ -73,7 +74,7 @@ def processDFS(q, cnt, a, b):
 if __name__ == '__main__':  
     startTime = time.time()
     # 使用多进程进行数据预处理
-    res = mtp.mtpcs(8, 25000, processDFS)
+    res = mtp.mtpcs(15, 60000, processDFS)
     print('res的长度')
     print(len(res))
     endTime = time.time()

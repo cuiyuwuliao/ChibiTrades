@@ -2,11 +2,11 @@ from binance.um_futures import UMFutures
 from binance.error import ClientError
 import pandas as pd
 # HMAC authentication with API key and secret
-key = ''
-secret = ''
+key = "fdada3ea1313b8c6f7f433e2f63c9fa4a7394daf07cf611d8069079bb152fab7"
+secret = "b4676e625617b7b78592f12192967a90c90f08f394560345ea76b720706eedb2"
 
 client = UMFutures(key=key, secret=secret)
-interval = '1m' #1m 3m 15m  1h 4h 1d
+interval = '1d' #1m 3m 15m  1h 4h 1d
 
 def klines(client,contractType,symbol, interval, starttime, endtime, limit):
     # PERPETUAL 永续合约 CURRENT_QUARTER 当季交割合约 NEXT_QUARTER 次季交割合约
@@ -25,5 +25,7 @@ def klines(client,contractType,symbol, interval, starttime, endtime, limit):
             )
         )
 # 用来获取不能从Binance直接下载，但是可以用api拉取的行情
-data = klines(client,'PERPETUAL','BTCUSDT',interval,None,None,1440) #1m:1440 3m:480 15m:96 1h:24 4h:6 1d:1
-data.to_csv(f'20240430_in_{interval}.csv')
+data = klines(client=client,contractType='PERPETUAL',
+              symbol='BTCUSDT',interval=interval,
+              starttime=1714521600000,endtime=1714521600000+24*3600*1000-1,limit=1) #1m:1440 3m:480 15m:96 1h:24 4h:6 1d:1
+data.to_csv(f'20240501_{interval}.csv')
