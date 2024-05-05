@@ -80,7 +80,6 @@ fig.update_layout(title=f"Data from {start_time} to {end_time}",
                   yaxis=dict(
                       title='Price',
                       title_font=dict(size=16, family='sans-serif', weight='bold'),
-                      tickformat='.5s',
                       tickfont=dict(family='sans-serif', size=13)
                   ),
                   xaxis=dict(
